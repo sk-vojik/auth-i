@@ -67,6 +67,7 @@ server.post('/api/login', (req, res) => {
     .first()
     .then(user => {
       if (user && bcrypt.compareSync(password, user.password)) {
+        console.log("worked");
         res.status(200).json({ message: `Welcome ${user.username}!` });
       } else {
         res.status(401).json({ message: 'You shall not pass' });
@@ -81,7 +82,7 @@ server.post('/api/login', (req, res) => {
 //restriction middleware
 
 
-function restricted(req, res, next) {
+function restricted (req, res, next) {
   if (req.session && req.session.user) {
     next();
   } else {
@@ -114,7 +115,7 @@ function restricted(req, res, next) {
 
 //get users
 
-server.get('/api/users', restricted, (req, res) => {
+server.get('/api/users', restricted, (req, res) => {   //add back restricted later
   Users.find()
     .then(users => {
       res.json(users);
